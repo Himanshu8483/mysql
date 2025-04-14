@@ -280,6 +280,192 @@ UPDATE product SET total = qty * rate;
 UPDATE product SET total = total + (rate * 20) / 100; (Que. Like 20% GST on rate)
 
 UPDATE product SET total = total - (total * 15) / 100; (Que. Like 15% Discount on rate) This reduces total by 15%.
+Why SET Does Not Work in MySQL Workbench?
+
+🔹 1. Temporarily Disable Safe Update Mode
+
+Check if Safe Updates mode is enabled
+
+SHOW VARIABLES LIKE 'sql_safe_updates';
+
+If the result is ON, then that’s why your query is not working.
+
+Run this before executing your query:
+
+SET SQL_SAFE_UPDATES = 0;
+
+Then, execute your update:
+
+UPDATE product 
+
+SET total = total - (total * 15) / 100;
+
+After the update, turn Safe Update Mode back on:
+
+SET SQL_SAFE_UPDATES = 1;
+
+ 
+
+🔹 2. Use a Primary Key in the WHERE Clause
+
+If product_id (or another primary key) exists, use:
+
+UPDATE product 
+
+SET total = total - (total * 15) / 100
+
+WHERE product_id > 0; or WHERE student_id IS NOT NULL; -- Ensure it includes a key column
+
+This satisfies MySQL's safe update requirements.
+
+ 
+
+🔹 3. Disable Safe Mode in MySQL Workbench Permanently
+
+If you are using MySQL Workbench:
+
+1.	Go to Edit → Preferences.
+
+2.	Navigate to SQL Editor.
+
+3.	Uncheck Safe Updates.
+
+4.	Click Apply and OK.
+
+5.	Restart MySQL Workbench.
+
+6.	Run your update query.
+
+ 
+
+SQL DELETE Statement:
+
+•	DELETE FROM product WHERE pname = 'hdd'; → Deletes records where pname is 'hdd'.
+
+•	DELETE FROM product; → Deletes all records from the product table.
+
+AND & OR Operators:
+
+•	AND → Both conditions must be TRUE.
+
+•	OR → At least one condition must be TRUE.
+
+Examples:
+
+SELECT * FROM student WHERE city='indore' AND name='pankaj';
+
+SELECT * FROM student WHERE city='indore' OR name='himanshu';
+
+ALTER TABLE Statement:
+
+The ALTER statement is used to modify an existing database table by adding, deleting, or modifying columns.
+
+ALTER TABLE student ADD COLUMN class VARCHAR(10); -- Adds a 'class' column.
+
+INSERT Statement: (We can directly pass values without table heading)
+
+INSERT INTO student VALUES (111, 'adi', 'satna', 20000), (112, 'punit', 'ujjaiin', 70000);
+
+Comparison Operators:
+
+> → Greater than, < → Less than, >= → Greater than or equal to, <= → Less than or equal to, = → Equal to
+
+Examples:
+
+SELECT * FROM student WHERE fees > 40000;
+
+SELECT * FROM student WHERE fees <= 15000;
+
+SELECT * FROM student WHERE fees > 14000 AND city = 'indore';
+
+IN & NOT IN Operator:
+
+•	IN → Checks if a value is present in a list.
+
+•	NOT IN → Excludes values from a list.
+
+Examples:
+
+SELECT * FROM student WHERE city IN ('indore', 'rewa');
+
+SELECT * FROM student WHERE city NOT IN ('indore', 'rewa');
+
+BETWEEN Operator:
+
+The BETWEEN operator works with numeric or date values to find records within a specified range (both values included).
+
+Example:
+
+SELECT * FROM student WHERE fees BETWEEN 20000 AND 70000;
+
+LIKE Operator (Pattern Matching):
+
+•	% → Matches multiple characters.
+
+•	_ → Matches a single character.
+
+Example:
+
+SELECT * FROM student WHERE name LIKE 'h%'; -- Names starting with 'h'
+
+
+
+
+
+🔍 LIKE Operator Examples (Pattern Matching)
+
+Query	Meaning
+
+SELECT * FROM student WHERE name LIKE '_a%';	2nd character is 'a'
+
+SELECT * FROM student WHERE name LIKE '%n__';	'n' is 3rd from last
+
+SELECT * FROM student WHERE name LIKE '%an%';	Name contains "an"
+
+SELECT * FROM student WHERE name LIKE '_i_a%';	2nd letter is 'i', 4th is 'a'
+
+SELECT * FROM student WHERE name LIKE '_i%s__';	2nd letter 'i' and 3rd last is 's'
+
+SELECT * FROM student WHERE name LIKE '%a%n%';	names where 'a' comes before 'n' (with any characters between).
+
+ 
+
+🗂️ ORDER BY Clause
+
+•	Used to sort records (ascending by default). ASC for ascending DESC for descending.
+
+SELECT * FROM student ORDER BY city;
+
+SELECT * FROM student ORDER BY city, fees;       -- If same city, sort by fees
+
+SELECT * FROM student ORDER BY city, fees DESC;  -- Fees in descending order
+
+ 
+
+🆔 DISTINCT Keyword
+
+•	Used to get unique values from a column or combination.
+
+SELECT DISTINCT city FROM student;
+
+SELECT DISTINCT city, name FROM student ORDER BY name;
+
+ 
+
+🔢 LIMIT Clause (MySQL Syntax)
+
+•	Restricts number of records returned.
+
+SELECT * FROM student LIMIT 3;       -- First 3 records
+
+SELECT * FROM student LIMIT 3, 2;    -- Skip 3, then show 2 records
+
+ 
+
+
+
+
+
 
  
 
