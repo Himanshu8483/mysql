@@ -460,7 +460,151 @@ SELECT * FROM student LIMIT 3;       -- First 3 records
 
 SELECT * FROM student LIMIT 3, 2;    -- Skip 3, then show 2 records
 
+ Notes on Different Servers:
+
+🔹 1. SQL Server
+
+Method	Syntax Example
+
+TOP	SELECT TOP 5 * FROM Employees;
+
+FETCH FIRST (2012+)	SELECT * FROM Employees ORDER BY ID OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY;
+
+LIMIT	❌ Not supported
+
+ROWNUM	❌ Not supported
+
  
+
+🔹 2. MySQL
+
+Method	Syntax Example
+
+LIMIT	SELECT * FROM Employees LIMIT 5;
+
+TOP	❌ Not supported
+
+FETCH	❌ Not supported
+
+ROWNUM	❌ Not supported
+
+ 
+
+🔹 3. Oracle
+
+Method	Syntax Example
+
+ROWNUM	SELECT * FROM Employees WHERE ROWNUM <= 5;
+
+FETCH FIRST	Oracle 12c+: SELECT * FROM Employees FETCH FIRST 5 ROWS ONLY;
+
+LIMIT	❌ Not supported
+
+TOP	❌ Not supported
+
+
+
+ 
+
+🔢 Aggregate Functions (Numerical Values):
+
+It is a function that performs a calculation on a set of values, and returns a single value.
+
+GROUP BY is used to group rows that have the same value in one or more columns.
+
+Aggregate functions like SUM(), AVG(), COUNT(), etc., are then applied to each group separately.
+
+Function	Description	Example
+
+MAX()	Returns the highest value	SELECT MAX(fees) FROM student;
+
+MIN()	Returns the lowest value	SELECT MIN(fees) FROM student;
+
+COUNT(*)	Counts all rows (including NULLs)	SELECT COUNT(*) FROM student;
+
+COUNT(column)	Counts non-null values in a column	SELECT COUNT(name) FROM student;
+
+AVG()	Returns average value	SELECT AVG(fees) AS avg_fees FROM student;
+
+SUM()	Returns total sum	SELECT SUM(fees) FROM student;
+
+Aggregate functions skip NULLs automatically (except COUNT(*)).
+
+📝 With heading / alias:
+
+SELECT MAX(fees) AS "high amount" FROM student;
+
+SELECT MAX(fees) higher FROM student;-- It work without Space and Quotes(“”).
+
+SELECT MAX(fees) "high amount" FROM student;		-- without AS
+
+🔍 COUNT with conditions:
+
+SELECT COUNT(name) FROM student WHERE city = "bhopal";
+
+SELECT COUNT(name) FROM student WHERE fees >= 20000;
+
+SELECT COUNT(name) FROM student WHERE city = "rewa" AND fees >= 2000;
+
+ 
+
+❓ NULL in SQL
+
+•	It’s not zero, not empty string (""), and not zero-length.
+
+•	It simply means “nothing is stored” in that field.
+
+•	INSERT INTO student VALUES(NULL, 'Neet', 'satna', 2000);
+
+Check for NULL:
+
+SELECT * FROM student WHERE roll_no IS NULL;
+
+SELECT * FROM student WHERE roll_no IS NOT NULL;
+
+Note:
+
+•	NULL ≠ "" (blank).
+
+•	COUNT(roll_no) does not include NULLs.
+
+ 
+
+🔤 String Functions
+
+Function	Description	Example
+
+CHAR()	Returns character for ASCII code	SELECT CHAR(67, 78, 34);
+
+CONCAT(str1, str2)	Joins strings	SELECT CONCAT(name, "-", city) FROM student;
+
+LOWER() or LCASE()	Converts to lowercase	SELECT LOWER(name) FROM student;
+
+UPPER() or UCASE()	Converts to uppercase	SELECT UPPER(name) FROM student;
+
+LENGTH()	Returns string length	SELECT LENGTH(name) FROM student;
+
+ 
+
+🔢 Math Functions
+
+Function	Description	Example
+
+POWER(x, y)	x raised to the power y	SELECT POWER(3, 3);
+
+ROUND(number)	Rounds a number to nearest integer	SELECT ROUND(56.99);
+
+ 
+
+✅ Tips
+
+•	Use aliases with AS or without quotes for custom column names.
+
+•	Double quotes are needed when alias names contain spaces.
+
+•	Always use WHERE clause carefully to filter data.
+
+
 
 
 
