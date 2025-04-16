@@ -605,6 +605,188 @@ ROUND(number)	Rounds a number to nearest integer	SELECT ROUND(56.99);
 •	Always use WHERE clause carefully to filter data.
 
 
+📘 MySQL Notes: Hexadecimal, CHAR() & Conversion( By Google)
+
+ 
+
+🔹 1. Hexadecimal to Character (CMD / MySQL)
+
+✅ Example:
+
+SELECT CAST(0x41 AS CHAR);   -- ✅ Output: A
+
+ℹ️ Why?
+
+•	0x41 is a hex literal.
+
+•	0x41 (hex) = 65 (decimal) = 'A' (ASCII character)
+
+•	Use CAST() to convert hex to character.
+
+🔹 Hex from a character:
+
+SELECT HEX('A');      -- ✅ Output: 41
+
+ 
+
+🔹 2. Convert Hex to Decimal
+
+SELECT CONV('41', 16, 10) AS decimal_value;
+
+➡️ Output: 65
+
+ 
+
+🔹 3. Convert Decimal/ASCII to Character
+
+SELECT CHAR(65);      -- Output: 'A'
+
+SELECT CHAR(67,78,88); -- Output: 'CNX'
+
+📝 If it shows BLOB(in workbench) or HEXA value(in CMD), use:
+
+SELECT CAST(CHAR(67,78,34) AS CHAR) AS output;
+
+
+
+Note: CHAR(67, 78, 88)	This creates a string: "CNX"
+
+CAST(... AS CHAR)	This converts the result to a string (CHAR), forcing MySQL to show it as text.
+
+ 
+
+🔹 4. See Character as Hex
+
+SELECT HEX('A');           -- Output: 41
+
+SELECT HEX(CHAR(67,78));   -- Output: 434E
+
+ 
+
+
+
+Mysql Functions Table: (Homework)
+
+✅ Core MySQL String Functions
+
+Function	Description	Example
+
+CONCAT()	Joins two or more strings	SELECT CONCAT('web', 'dev');
+
+LOWER(), LCASE()	Converts string to lowercase	SELECT LOWER('HELLO');
+
+UPPER(), UCASE()	Converts string to uppercase	SELECT UPPER('hello');
+
+TRIM()	Removes spaces from both ends of string	SELECT TRIM(' hello ');
+
+REPLACE()	Replaces substring with another	SELECT REPLACE('web dev', 'dev', 'design');
+
+SUBSTRING()	Extracts part of a string	SELECT SUBSTRING('developer', 1, 4);
+
+LENGTH()	Returns number of bytes in a string	SELECT LENGTH('Hello');
+
+CHAR_LENGTH()	Returns number of characters	SELECT CHAR_LENGTH('Hello');
+
+INSTR()	Position of substring in string	SELECT INSTR('backend', 'end');
+
+LOCATE()	Position of substring (like INSTR)	SELECT LOCATE('end', 'backend');
+
+REVERSE()	Reverses a string	SELECT REVERSE('hello');
+
+🕒 Core MySQL Date & Time Functions
+
+Function	Description	Example
+
+NOW()	Current date and time	SELECT NOW();
+
+CURDATE()	Current date	SELECT CURDATE();
+
+CURTIME()	Current time	SELECT CURTIME();
+
+DATE()	Extracts date part from datetime	SELECT DATE(NOW());
+
+TIME()	Extracts time part	SELECT TIME(NOW());
+
+DATEDIFF()	Difference between two dates (days)	SELECT DATEDIFF('2025-05-01', '2025-04-01');
+
+DATE_ADD()	Adds interval to a date	SELECT DATE_ADD(CURDATE(), INTERVAL 7 DAY);
+
+DATE_SUB()	Subtracts interval from a date	SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY);
+
+📊 Aggregate Functions
+
+Function	Description	Example
+
+COUNT()	Counts rows (can exclude NULLs)	SELECT COUNT(*) FROM student;
+
+SUM()	Returns the total sum of a column	SELECT SUM(fees) FROM student;
+
+AVG()	Returns the average value	SELECT AVG(fees) FROM student;
+
+MIN()	Returns the smallest value	SELECT MIN(fees) FROM student;
+
+MAX()	Returns the largest value	SELECT MAX(fees) FROM student;
+
+GROUP_CONCAT()	Joins grouped strings	SELECT GROUP_CONCAT(name) FROM student;
+
+➗ Mathematical Functions
+
+Function	Description	Example
+
+ROUND()	Rounds to given decimal places	SELECT ROUND(23.567, 1);
+
+CEIL()	Rounds up to next integer	SELECT CEIL(4.2);
+
+FLOOR()	Rounds down to lower integer	SELECT FLOOR(4.9);
+
+ABS()	Returns absolute value	SELECT ABS(-9);
+
+MOD()	Returns remainder after division	SELECT MOD(10, 3);
+
+RAND()	Returns a random float (0 to 1)	SELECT RAND();
+
+POWER()	Raises a number to given power	SELECT POWER(2, 3);
+
+🔀 Conditional and Conversion Functions
+
+Function	Description	Example
+
+IF(condition, true, false)	Conditional expression (like ternary)	SELECT IF(1=1, 'yes', 'no');
+
+CASE	Switch-case logic	SELECT CASE WHEN age >= 18 THEN 'Adult' END;
+
+IFNULL(expr, val)	Returns val if expr is NULL	SELECT IFNULL(NULL, 'N/A');
+
+COALESCE()	Returns first non-NULL value	SELECT COALESCE(NULL, '', 'Default');
+
+ISNULL(expr)	Returns 1 if expr is NULL	SELECT ISNULL(NULL);
+
+CAST(expr AS type)	Converts a value to specified type	SELECT CAST(123 AS CHAR);
+
+CONVERT(expr USING charset)	Converts string to given charset	SELECT CONVERT(name USING utf8);
+
+utf8 is a character set in MySQL used to store and represent text using the Unicode standard(Can store almost any language).
+
+⚠️ Note:
+
+MySQL’s utf8 only supports up to 3 bytes per character, not full Unicode (some emojis may break).
+
+For full Unicode support, use:
+
+utf8mb4	
+
+🔡 ASCII and Binary Functions
+
+Function	Description	Example
+
+CHAR()	Returns character from ASCII code	SELECT CHAR(65); → 'A'
+
+ASCII()	Returns ASCII value of first character	SELECT ASCII('A'); → 65
+
+HEX()	Converts value to hexadecimal	SELECT HEX('A'); → 41
+
+
+
 
 
 
