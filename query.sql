@@ -889,6 +889,390 @@ User Profile Page	CONCAT(), TRIM(), REPLACE()
 
 
 
+Advance Class: 
+
+🔹 GROUP BY Statement
+
+•	Used to group rows that have the same values in a column.
+
+•	Often used with aggregate functions: COUNT(), MAX(), MIN(), SUM(), AVG().
+
+✅ Syntax:
+
+SELECT column, aggregate_function()
+
+FROM table_name
+
+WHERE condition
+
+GROUP BY column
+
+ORDER BY column;
+
+📌 Example:
+
+SELECT COUNT(CustomerID), Country
+
+FROM Customers
+
+GROUP BY Country;
+
+➡️ Counts customers in each country.
+
+ 
+
+🔹 HAVING Clause
+
+•	Used with GROUP BY to filter groups after aggregation.
+
+•	WHERE ❌ cannot be used with aggregate functions like SUM(), COUNT().
+
+✅ Syntax:
+
+SELECT column, SUM(column)
+
+FROM table
+
+GROUP BY column
+
+HAVING SUM(column) > value;
+
+📌 Example:
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+ 
+
+🔹 SQL Constraints (Rules on Table Columns)
+
+Constraints ensure data accuracy and reliability.
+
+Constraint	Meaning
+
+NOT NULL	Column must have a value (can’t be NULL).
+
+UNIQUE	All values in the column must be different. Can have 1 NULL.
+
+PRIMARY KEY	Uniquely identifies rows. Combination of NOT NULL + UNIQUE.
+
+FOREIGN KEY	Links two tables. Must match values in another table’s primary key.
+
+CHECK	Validates values in a column (like CHECK (age > 18)).
+
+DEFAULT	Sets a default value for a column.
+
+CREATE INDEX	Improves the speed of search queries.
+
+ 
+
+🔹 Practice Queries from Class:
+
+-- Sum by product name
+
+SELECT pname, SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+ORDER BY pname;
+
+
+
+-- Sum with filter
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE rate > 1000
+
+GROUP BY pname;
+
+
+
+-- HAVING clause (sum filter)
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+
+
+-- Filter product name using HAVING
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING pname = "mouse";
+
+
+
+-- Multiple conditions
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE pname NOT IN ("hdd")
+
+GROUP BY pname
+
+HAVING SUM(total) > 10000;
+
+ 
+
+🔹 Table Constraint Example:
+
+CREATE TABLE constraints (
+
+  roll INT(10) UNIQUE,
+
+  name VARCHAR(10) PRIMARY KEY,
+
+  city VARCHAR(10)
+
+);
+
+📌 UNIQUE → Allows NULL
+
+📌 PRIMARY KEY → No NULL, must be unique
+
+Insert Example:
+
+INSERT INTO constraints
+
+VALUES (NULL, "vijay", "rewa"), (NULL, "not dup", NULL);
+
+ 
+
+🧠 SQL Constraints:
+
+🔒 1. NOT NULL – "No Empty Allowed"
+
+You must enter a value in this column. It cannot be left blank (NULL).
+
+💡 Note:
+
+By default, a column can store NULL values unless NOT NULL is specified.
+
+📌 Example:
+
+CREATE TABLE students (
+
+  rollno INT,
+
+  name VARCHAR(10) NOT NULL,
+
+  city VARCHAR(10)
+
+);
+
+
+
+-- This will cause an error because 'name' is NOT NULL
+
+INSERT INTO students VALUES (101, NULL, 'Bhopal'); ❌
+
+
+
+-- This is valid
+
+INSERT INTO students VALUES (101, 'Himanshu', 'Bhopal'); ✅
+
+
+
+-- This is valid too (because 'null' is a string, not NULL)
+
+INSERT INTO students VALUES (103, 'null', 'Sehore'); ✅
+
+ 
+
+✅ 2. CHECK – "Only Specific Values Allowed"
+
+Used to allow only valid values based on some condition (like range, list, or pattern).
+
+The CHECK constraint should be used with a condition inside parentheses. Also, the NOT NULL constraint should be placed outside or after the data type, not after CHECK.
+
+📌 Example:
+
+CREATE TABLE employee ( 
+
+  emp_no VARCHAR(10) CHECK (emp_no LIKE 'e%'),        -- must start with 'e'
+
+  name VARCHAR(10) NOT NULL,
+
+  city VARCHAR(10) CHECK (city IN ('Bhopal', 'Indore', 'Ujjain')),
+
+  age int CHECK (age>=18),
+
+  salary INT CHECK (salary BETWEEN 5000 AND 25000)
+
+);
+
+INSERT INTO employee VALUES 
+
+('e001', 'Himanshu', 'Indore',20, 20000),
+
+('e002', 'Jatin', 'Ujjain', 22, 25000); ✅
+
+⚠️ Note:
+
+•	Always use parentheses () with CHECK constraints.
+
+•	LIKE, IN, and range comparisons (BETWEEN) are commonly used.
+
+ 
+
+✅ 3. DEFAULT – "Auto Fill If Empty"
+
+If no value is given for this column, it will automatically fill with a default value.
+
+📌 Example:
+
+CREATE TABLE stu (
+
+  no INT,
+
+  name VARCHAR(10),
+
+  city VARCHAR(10) DEFAULT 'BTech'
+
+);
+
+-- city will be 'BTech' because not provided
+
+INSERT INTO stu (no, name) VALUES (111, 'Himanshu'), (112, 'Jatin');
+
+-- All values provided
+
+INSERT INTO stu VALUES (113, 'Vijay', 'MBA');
+
+ 
+
+🔗 4. FOREIGN KEY Constraint – "Connect Two Tables"
+
+🔹 Definition
+
+Used to link one table to another. Ensures that the value in one table (child) matches a primary key in another table (parent). 
+
+🧠 Concept:
+
+•	Parent Table → Has the PRIMARY KEY
+
+•	Child Table → Uses FOREIGN KEY to refer to parent
+
+📌 Example:
+
+Relationship: In the child table (child), the rollno comes from the parent table (parent), like a child referring to its parent. 
+
+ 
+
+✅ Step 1: Create parent table
+
+CREATE TABLE parent (
+
+  rollno INT PRIMARY KEY,
+
+  name VARCHAR(10),
+
+  class VARCHAR(10)
+
+);
+
+ 
+
+✅ Step 2: Create child table with FOREIGN KEY
+
+CREATE TABLE child (
+
+  rollno INT,
+
+  marks INT,
+
+  FOREIGN KEY (rollno) REFERENCES parent(rollno)
+
+);
+
+ 
+
+✅ Step 3: Insert data into both tables
+
+INSERT INTO parent VALUES 
+
+(101, 'himanshu', 'btch'), 
+
+(102, 'jatin', 'bcom'), 
+
+(103, 'vijay', 'bsc');
+
+
+
+INSERT INTO child VALUES 
+
+(101, 80), 
+
+(102, 85), 
+
+(103, 88);
+
+ 
+
+✅ Step 4: Show name, class, and marks (as percentage) using subquery (without join)
+
+SELECT 
+
+  name,
+
+  class,
+
+  (SELECT marks FROM child WHERE child.rollno = parent.rollno) AS percentage
+
+FROM 
+
+  parent;
+
+ 
+
+
+
+Notes:
+
+DELETE FROM student WHERE roll_no = roll_no;
+
+❌ Why does it delete ALL rows?
+
+Because roll_no = roll_no is true for every row — each roll number equals itself.
+
+So it's the same as:
+
+DELETE FROM student;		-- delete every row
+
+
+
+❗But safer to use specific conditions like:
+
+DELETE FROM student WHERE roll_no = 101; -- it delete only 101 roll_no data
+
+
+
+DELETE FROM student WHERE roll_no IS NULL;
+
+✅ This will correctly delete all rows where roll_no is NULL.
+
 
 
 
