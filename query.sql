@@ -1273,6 +1273,400 @@ DELETE FROM student WHERE roll_no IS NULL;
 
 ✅ This will correctly delete all rows where roll_no is NULL.
 
+✅ What is a Subquery?
+
+A subquery is a query inside another query.
+
+🔹 It helps you: Fetch related data, Filter results, Replace JOINs in some cases
+
+ 
+
+✅ Example Tables:
+
+student table:
+
+rollno	name	marks
+
+101	Himanshu	80
+
+102	Jatin	70
+
+103	Vijay	90
+
+ 
+
+✅ Step-by-Step with Subquery
+
+🎯 Goal: Get students who scored above average
+
+🧩 Subquery First:
+
+SELECT AVG(marks) FROM student;
+
+(returns 80)
+
+ 
+
+✅ Main Query + Subquery:
+
+SELECT name, marks
+
+FROM student
+
+WHERE marks > (SELECT AVG(marks) FROM student);
+
+🧾 Output:
+
+name	marks
+
+Vijay	90
+
+Because only Vijay scored above the average (80).
+
+ 
+
+✅ Types of Subqueries:
+
+1.	In SELECT clause:
+
+SELECT name, (SELECT AVG(marks) FROM student) AS avg_marks FROM student;
+
+2.	In WHERE clause (most common):
+
+SELECT name FROM student WHERE marks > (SELECT AVG(marks) FROM student);
+
+3.	In FROM clause:
+
+SELECT * FROM (SELECT * FROM student WHERE marks > 80) AS top_students;
+
+ 
+
+✅ Summary (For Notes):
+
+Term	Meaning
+
+Subquery	Query inside another query
+
+Purpose	To filter, compare, or calculate related data
+
+Common use	Inside SELECT, WHERE, or FROM clause
+
+ 
+
+ 
+
+🔹 1. Indexes in SQL
+
+•	Indexes help retrieve data faster from a table.
+
+•	Work like a table of contents in a book.
+
+•	Read operations become faster, but:
+
+⚠️ Update/Insert/Delete operations become slower (because the index also needs updating).
+
+ 
+
+📌 Create Index Syntax
+
+👉 Regular Index (allows duplicate values)
+
+CREATE INDEX index_name
+
+ON table_name (col1, col2, ...);
+
+👉 Unique Index (no duplicate values allowed)
+
+CREATE UNIQUE INDEX index_name
+
+ON table_name (col1, col2, ...);
+
+🔁 Syntax may vary slightly in different databases. Always check your DBMS documentation.
+
+ 
+
+💡 Example:
+
+CREATE INDEX myidx ON student(class);
+
+SELECT * FROM student;
+
+✅ Index helps speed up SELECT queries, especially on large tables.
+
+ 
+
+👁️ Visual Representation
+
+Here’s how it looks internally (simplified):
+
+STUDENT TABLE (Partitioned by CLASS)
+
+ ├── Partition 10 --> [Index on Roll_No]
+
+ ├── Partition 11 --> [Index on Roll_No]
+
+ └── Partition 12 --> [Index on Roll_No]
+
+When you run:
+
+SELECT * FROM student WHERE class = 11 AND roll_no = 123;
+
+👉 Database directly jumps to:
+
+•	Partition for class = 11
+
+•	Uses index to search for roll_no = 123
+
+🔋 Fast and Efficient!
+
+ 
+
+🔸 So, What is myidx?
+
+•	myidx is just a custom name for your index.
+
+•	You can name it anything like idx_class, class_index, index1... your choice!
+
+•	It’s useful when you:
+
+o	Want to DROP it later:
+
+DROP INDEX myidx ON student;
+
+o	Want to look up existing indexes
+
+SHOW INDEX FROM student;
+
+🎯 It’s like giving a name to a shortcut — so you can reuse or manage it later.
+
+ 
+
+🔹 2. ALTER Statement
+
+Used to:
+
+•	Add, Modify, Delete, or Rename columns in an existing table.
+
+•	Add constraints like NOT NULL, UNIQUE, etc.
+
+ 
+
+📌 2.1 Add Column
+
+ALTER TABLE table_name
+
+ADD column_name datatype;
+
+✅ Example:
+
+ALTER TABLE customers ADD COLUMN email VARCHAR(255);
+
+-- or( when adding column it works if not using column but other place always use column)
+
+ALTER TABLE customers ADD email VARCHAR(255);
+
+ 
+
+📌 2.2 Drop Column
+
+ALTER TABLE table_name
+
+DROP COLUMN column_name;
+
+✅ Example:
+
+ALTER TABLE employee DROP COLUMN state;
+
+⚠️ Some databases may not support dropping a column directly.
+
+ 
+
+📌 2.3 Rename Column
+
+ALTER TABLE table_name
+
+RENAME COLUMN old_name TO new_name;
+
+✅ Example:
+
+ALTER TABLE student RENAME COLUMN city TO address;
+
+ 
+
+📌 2.4 Modify Column (Change datatype or size)
+
+ALTER TABLE table_name
+
+MODIFY COLUMN column_name NEW_DATATYPE;
+
+✅ Example:
+
+ALTER TABLE employee MODIFY COLUMN name VARCHAR(15);
+
+❌ Reducing size can throw error if existing data doesn't fit:
+
+ALTER TABLE employee MODIFY COLUMN name VARCHAR(5);  -- May cause error
+
+
+
+🔹 3. 🔁 Changing Datatype (Depends on Compatibility)
+
+From	To	Allowed?
+
+INT → VARCHAR	✅ Yes	All int values can become text
+
+VARCHAR → INT	⚠️ Maybe	Only if all values are numbers
+
+FLOAT → INT	⚠️ Maybe	Will truncate decimals
+
+INT → DATE	❌ No	Incompatible format
+
+ 
+
+🚫 Example: Error when incompatible
+
+ALTER TABLE employee MODIFY COLUMN name INT;
+
+❌ This fails if name contains text values like "John".
+
+
+
+Q: Can we change the datatype of a column in SQL if data is already inserted?
+
+✅ Yes, if the existing data is compatible with the new datatype or size.
+
+
+
+ 
+
+🔹 3. SQL Table Constraints via ALTER
+
+✅ Use ALTER to Apply Constraints after Table Creation (if no data inserted yet)
+
+📌 Example:
+
+CREATE TABLE person (
+
+    id INT,
+
+    name VARCHAR(10),
+
+    age INT
+
+);
+
+Add NOT NULL
+
+ALTER TABLE person
+
+MODIFY COLUMN id INT NOT NULL;
+
+Add UNIQUE Constraint
+
+ALTER TABLE person
+
+ADD UNIQUE(id);  -- Now id becomes PRIMARY KEY because it's already NOT NULL
+
+ALTER TABLE person
+
+ADD UNIQUE(age); -- Now age becomes UNIQUE KEY
+
+ 
+
+✅ Named Constraint in MySQL
+
+🧱 What is a "Named Constraint"?
+
+A named constraint is when you give a custom name to a constraint (like UNIQUE, PRIMARY KEY, etc.) so it's easier to identify and manage later.
+
+ 
+
+🧠 Why use a named constraint?
+
+•	Easy to drop or modify later (you know the name).
+
+•	No need to search for the system-generated name.
+
+•	Improves code readability and maintenance.
+
+ 
+
+🔧 Syntax (MySQL):
+
+ALTER TABLE table_name
+
+ADD CONSTRAINT constraint_name UNIQUE (column_name);
+
+ 
+
+🧾 Example:
+
+ALTER TABLE students
+
+ADD CONSTRAINT unique_roll UNIQUE (roll_no);
+
+✅ What this does:
+
+1.	Makes sure roll_no has no duplicates.
+
+2.	Names the constraint as unique_roll.
+
+ 
+
+❌ What if I skip the name?
+
+ALTER TABLE students
+
+ADD UNIQUE (roll_no);
+
+⚠️ SQL will still create a UNIQUE constraint, but MySQL will auto-generate a name (like students_roll_no_uq1) — harder to remember or manage.
+
+ 
+
+🔥 How to remove the constraint?
+
+✅ In MySQL:
+
+ALTER TABLE students DROP INDEX unique_roll;
+
+⚠️ Note: In MySQL, UNIQUE constraints are treated as indexes, so you use DROP INDEX — not DROP CONSTRAINT.
+
+
+
+🧠 Remember here's the difference:
+
+Action	What it does
+
+ALTER TABLE students DROP INDEX unique_roll;	❌ Only removes the UNIQUE constraint from roll_no, NOT the column itself.
+
+ALTER TABLE students DROP COLUMN roll_no;	⚠️ Completely deletes the entire roll_no column — data gone!
+
+
+
+ 
+
+🧠 Interview Tip:
+
+Q: Why should we use named constraints in SQL?
+
+✅ So we can easily drop or update them later using their names. It also makes the code cleaner and more maintainable.
+
+ 
+
+🔁 Summary Table:
+
+Task	With Named Constraint	Without Named Constraint
+
+Add UNIQUE	ADD CONSTRAINT name UNIQUE(...)	ADD UNIQUE (...)
+
+Drop in MySQL	DROP INDEX constraint_name	SHOW INDEXES → get name → drop
+
+Easy to manage?	✅ Yes	❌ No (name is auto-generated)
+
+ 
+
+Awesome! You've got a solid table for constraint types. Now let's complete it with how to drop each one — in a way that's simple, clear, and 100% MySQL-friendly. ✅
+
 
 
 
