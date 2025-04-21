@@ -567,6 +567,404 @@ Note:
 •	NULL ≠ "" (blank).
 
 •	COUNT(roll_no) does not include NULLs.
+Function	Description	Example
+
+CHAR()	Returns character for ASCII code	SELECT CHAR(67, 78, 34);
+
+CONCAT(str1, str2)	Joins strings	SELECT CONCAT(name, "-", city) FROM student;
+
+LOWER() or LCASE()	Converts to lowercase	SELECT LOWER(name) FROM student;
+
+UPPER() or UCASE()	Converts to uppercase	SELECT UPPER(name) FROM student;
+
+LENGTH()	Returns string length	SELECT LENGTH(name) FROM student;
+
+ 
+
+🔢 Math Functions
+
+Function	Description	Example
+
+POWER(x, y)	x raised to the power y	SELECT POWER(3, 3);
+
+ROUND(number)	Rounds a number to nearest integer	SELECT ROUND(56.99);
+
+ 
+
+✅ Tips
+
+•	Use aliases with AS or without quotes for custom column names.
+
+•	Double quotes are needed when alias names contain spaces.
+
+•	Always use WHERE clause carefully to filter data.
+
+
+📘 MySQL Notes: Hexadecimal, CHAR() & Conversion( By Google)
+
+ 
+
+🔹 1. Hexadecimal to Character (CMD / MySQL)
+
+✅ Example:
+
+SELECT CAST(0x41 AS CHAR);   -- ✅ Output: A
+
+ℹ️ Why?
+
+•	0x41 is a hex literal.
+
+•	0x41 (hex) = 65 (decimal) = 'A' (ASCII character)
+
+•	Use CAST() to convert hex to character.
+
+🔹 Hex from a character:
+
+SELECT HEX('A');      -- ✅ Output: 41
+
+ 
+
+🔹 2. Convert Hex to Decimal
+
+SELECT CONV('41', 16, 10) AS decimal_value;
+
+➡️ Output: 65
+
+ 
+
+🔹 3. Convert Decimal/ASCII to Character
+
+SELECT CHAR(65);      -- Output: 'A'
+
+SELECT CHAR(67,78,88); -- Output: 'CNX'
+
+📝 If it shows BLOB(in workbench) or HEXA value(in CMD), use:
+
+SELECT CAST(CHAR(67,78,34) AS CHAR) AS output;
+
+
+
+Note: CHAR(67, 78, 88)	This creates a string: "CNX"
+
+CAST(... AS CHAR)	This converts the result to a string (CHAR), forcing MySQL to show it as text.
+
+ 
+
+🔹 4. See Character as Hex
+
+SELECT HEX('A');           -- Output: 41
+
+SELECT HEX(CHAR(67,78));   -- Output: 434E
+
+ 
+
+
+
+Mysql Functions Table: (Homework)
+
+✅ Core MySQL String Functions
+
+Function	Description	Example
+
+CONCAT()	Joins two or more strings	SELECT CONCAT('web', 'dev');
+
+LOWER(), LCASE()	Converts string to lowercase	SELECT LOWER('HELLO');
+
+UPPER(), UCASE()	Converts string to uppercase	SELECT UPPER('hello');
+
+TRIM()	Removes spaces from both ends of string	SELECT TRIM(' hello ');
+
+REPLACE()	Replaces substring with another	SELECT REPLACE('web dev', 'dev', 'design');
+
+SUBSTRING()	Extracts part of a string	SELECT SUBSTRING('developer', 1, 4);
+
+LENGTH()	Returns number of bytes in a string	SELECT LENGTH('Hello');
+
+CHAR_LENGTH()	Returns number of characters	SELECT CHAR_LENGTH('Hello');
+
+INSTR()	Position of substring in string	SELECT INSTR('backend', 'end');
+
+LOCATE()	Position of substring (like INSTR)	SELECT LOCATE('end', 'backend');
+
+REVERSE()	Reverses a string	SELECT REVERSE('hello');
+
+🕒 Core MySQL Date & Time Functions
+
+Function	Description	Example
+
+NOW()	Current date and time	SELECT NOW();
+
+CURDATE()	Current date	SELECT CURDATE();
+
+CURTIME()	Current time	SELECT CURTIME();
+
+DATE()	Extracts date part from datetime	SELECT DATE(NOW());
+
+TIME()	Extracts time part	SELECT TIME(NOW());
+
+DATEDIFF()	Difference between two dates (days)	SELECT DATEDIFF('2025-05-01', '2025-04-01');
+
+DATE_ADD()	Adds interval to a date	SELECT DATE_ADD(CURDATE(), INTERVAL 7 DAY);
+
+DATE_SUB()	Subtracts interval from a date	SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY);
+
+📊 Aggregate Functions
+
+Function	Description	Example
+
+COUNT()	Counts rows (can exclude NULLs)	SELECT COUNT(*) FROM student;
+
+SUM()	Returns the total sum of a column	SELECT SUM(fees) FROM student;
+
+AVG()	Returns the average value	SELECT AVG(fees) FROM student;
+
+MIN()	Returns the smallest value	SELECT MIN(fees) FROM student;
+
+MAX()	Returns the largest value	SELECT MAX(fees) FROM student;
+
+GROUP_CONCAT()	Joins grouped strings	SELECT GROUP_CONCAT(name) FROM student;
+
+➗ Mathematical Functions
+
+Function	Description	Example
+
+ROUND()	Rounds to given decimal places	SELECT ROUND(23.567, 1);
+
+CEIL()	Rounds up to next integer	SELECT CEIL(4.2);
+
+FLOOR()	Rounds down to lower integer	SELECT FLOOR(4.9);
+
+ABS()	Returns absolute value	SELECT ABS(-9);
+
+MOD()	Returns remainder after division	SELECT MOD(10, 3);
+
+RAND()	Returns a random float (0 to 1)	SELECT RAND();
+
+POWER()	Raises a number to given power	SELECT POWER(2, 3);
+
+🔀 Conditional and Conversion Functions
+
+Function	Description	Example
+
+IF(condition, true, false)	Conditional expression (like ternary)	SELECT IF(1=1, 'yes', 'no');
+
+CASE	Switch-case logic	SELECT CASE WHEN age >= 18 THEN 'Adult' END;
+
+IFNULL(expr, val)	Returns val if expr is NULL	SELECT IFNULL(NULL, 'N/A');
+
+COALESCE()	Returns first non-NULL value	SELECT COALESCE(NULL, '', 'Default');
+
+ISNULL(expr)	Returns 1 if expr is NULL	SELECT ISNULL(NULL);
+
+CAST(expr AS type)	Converts a value to specified type	SELECT CAST(123 AS CHAR);
+
+CONVERT(expr USING charset)	Converts string to given charset	SELECT CONVERT(name USING utf8);
+
+utf8 is a character set in MySQL used to store and represent text using the Unicode standard(Can store almost any language).
+
+⚠️ Note:
+
+MySQL’s utf8 only supports up to 3 bytes per character, not full Unicode (some emojis may break).
+
+For full Unicode support, use:
+
+utf8mb4	
+
+🔡 ASCII and Binary Functions
+
+Function	Description	Example
+
+CHAR()	Returns character from ASCII code	SELECT CHAR(65); → 'A'
+
+ASCII()	Returns ASCII value of first character	SELECT ASCII('A'); → 65
+
+HEX()	Converts value to hexadecimal	SELECT HEX('A'); → 41
+
+✅ Core MySQL Functions You Must Know as a Web Developer
+
+These are the most important, used in almost every web project (login, dashboards, filtering, reports, etc.):
+
+🔹 String Functions (Text Handling)
+
+Function	Why?
+
+CONCAT()	To join values (e.g. full name, address)
+
+LOWER() / UPPER()	For case-insensitive searches
+
+TRIM()	Clean user input
+
+REPLACE()	Update or clean data
+
+SUBSTRING()	Extract part of data (e.g., short descriptions)
+
+🔹 Date & Time
+
+Function	Why?
+
+NOW()	Timestamps (logins, posts, etc.)
+
+CURDATE()	Date-only fields
+
+DATEDIFF()	Show user how many days ago something happened
+
+DATE_ADD() / DATE_SUB()	Deadlines, expiry, scheduling
+
+🔹 Aggregate Functions (Analytics, Admin Panels)
+
+Function	Why?
+
+COUNT()	Count users/orders/messages
+
+SUM()	Total income, expenses
+
+AVG()	Average ratings, prices
+
+MIN() / MAX()	Oldest, newest, lowest, highest values
+
+🔹 Math & Numbers
+
+Function	Why?
+
+ROUND()	Round prices, ratings
+
+CEIL() / FLOOR()	Pagination, pricing logic
+
+ABS()	Absolute values, differences
+
+🔹 Conditional Logic
+
+Function	Why?
+
+IF()	Dynamic fields (e.g., pass/fail)
+
+CASE	Advanced conditional logic
+
+IFNULL() / COALESCE()	Prevent NULL issues in display
+
+🔹 Data Type Conversion
+
+Function	Why?
+
+CAST()	Show numbers as strings (or vice versa)
+
+CONVERT()	Handle character encoding properly
+
+ 
+
+❗ Functions That Are Useful But Not Always Required
+
+•	CHAR(), ASCII(), HEX() → more useful in data security, binary work, or DB internals
+
+•	GROUP_CONCAT() → very useful for grouping related values (e.g., list of tags per product)
+
+ 
+
+👨‍💻 When You’ll Use These
+
+Use Case	Needed Functions
+
+Login System	NOW(), IFNULL(), LOWER()
+
+Blog/Post Website	SUBSTRING(), NOW(), DATEDIFF()
+
+E-commerce Site	SUM(), COUNT(), AVG(), ROUND()
+
+Admin Dashboard	All aggregate functions, CASE, GROUP_CONCAT()
+
+User Profile Page	CONCAT(), TRIM(), REPLACE()
+
+ 
+
+🎯 Final Advice:
+
+👉 Don’t try to memorize all at once.
+
+🔁 Just understand what they do, and learn them as you build real features.
+
+
+
+Advance Class: 
+
+🔹 GROUP BY Statement
+
+•	Used to group rows that have the same values in a column.
+
+•	Often used with aggregate functions: COUNT(), MAX(), MIN(), SUM(), AVG().
+
+✅ Syntax:
+
+SELECT column, aggregate_function()
+
+FROM table_name
+
+WHERE condition
+
+GROUP BY column
+
+ORDER BY column;
+
+📌 Example:
+
+SELECT COUNT(CustomerID), Country
+
+FROM Customers
+
+GROUP BY Country;
+
+➡️ Counts customers in each country.
+
+ 
+
+🔹 HAVING Clause
+
+•	Used with GROUP BY to filter groups after aggregation.
+
+•	WHERE ❌ cannot be used with aggregate functions like SUM(), COUNT().
+
+✅ Syntax:
+
+SELECT column, SUM(column)
+
+FROM table
+
+GROUP BY column
+
+HAVING SUM(column) > value;
+
+📌 Example:
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+ 
+
+🔹 SQL Constraints (Rules on Table Columns)
+
+Constraints ensure data accuracy and reliability.
+
+Constraint	Meaning
+
+NOT NULL	Column must have a value (can’t be NULL).
+
+UNIQUE	All values in the column must be different. Can have 1 NULL.
+
+PRIMARY KEY	Uniquely identifies rows. Combination of NOT NULL + UNIQUE.
+
+FOREIGN KEY	Links two tables. Must match values in another table’s primary key.
+
+CHECK	Validates values in a column (like CHECK (age > 18)).
+
+DEFAULT	Sets a default value for a column.
+
+CREATE INDEX	Improves the speed of search queries.
+
+ 
 
  
 
