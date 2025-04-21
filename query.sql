@@ -969,3 +969,675 @@ CREATE INDEX	Improves the speed of search queries.
  
 
 🔤 String Functions
+
+🔹 Practice Queries from Class:
+
+-- Sum by product name
+
+SELECT pname, SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+ORDER BY pname;
+
+
+
+-- Sum with filter
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE rate > 1000
+
+GROUP BY pname;
+
+
+
+-- HAVING clause (sum filter)
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+
+
+-- Filter product name using HAVING
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING pname = "mouse";
+
+
+
+-- Multiple conditions
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE pname NOT IN ("hdd")
+
+GROUP BY pname
+
+HAVING SUM(total) > 10000;
+
+ 
+
+🔹 Table Constraint Example:
+
+CREATE TABLE constraints (
+
+  roll INT(10) UNIQUE,
+
+  name VARCHAR(10) PRIMARY KEY,
+
+  city VARCHAR(10)
+
+);
+
+📌 UNIQUE → Allows NULL
+
+📌 PRIMARY KEY → No NULL, must be unique
+
+Insert Example:
+
+INSERT INTO constraints
+
+VALUES (NULL, "vijay", "rewa"), (NULL, "not dup", NULL);
+
+ 
+
+🧠 SQL Constraints:
+
+🔒 1. NOT NULL – "No Empty Allowed"
+
+You must enter a value in this column. It cannot be left blank (NULL).
+
+💡 Note:
+
+By default, a column can store NULL values unless NOT NULL is specified.
+
+📌 Example:
+
+CREATE TABLE students (
+
+  rollno INT,
+
+  name VARCHAR(10) NOT NULL,
+
+  city VARCHAR(10)
+
+);
+
+
+
+-- This will cause an error because 'name' is NOT NULL
+
+INSERT INTO students VALUES (101, NULL, 'Bhopal'); ❌
+
+
+
+-- This is valid
+
+INSERT INTO students VALUES (101, 'Himanshu', 'Bhopal'); ✅
+
+
+
+-- This is valid too (because 'null' is a string, not NULL)
+
+INSERT INTO students VALUES (103, 'null', 'Sehore'); ✅
+
+ 
+
+✅ 2. CHECK – "Only Specific Values Allowed"
+
+Used to allow only valid values based on some condition (like range, list, or pattern).
+
+The CHECK constraint should be used with a condition inside parentheses. Also, the NOT NULL constraint should be placed outside or after the data type, not after CHECK.
+
+📌 Example:
+
+CREATE TABLE employee ( 
+
+  emp_no VARCHAR(10) CHECK (emp_no LIKE 'e%'),        -- must start with 'e'
+
+  name VARCHAR(10) NOT NULL,
+
+  city VARCHAR(10) CHECK (city IN ('Bhopal', 'Indore', 'Ujjain')),
+
+  age int CHECK (age>=18),
+
+  salary INT CHECK (salary BETWEEN 5000 AND 25000)
+
+);
+
+INSERT INTO employee VALUES 
+
+('e001', 'Himanshu', 'Indore',20, 20000),
+
+('e002', 'Jatin', 'Ujjain', 22, 25000); ✅
+
+⚠️ Note:
+
+•	Always use parentheses () with CHECK constraints.
+
+•	LIKE, IN, and range comparisons (BETWEEN) are commonly used.
+
+ 
+
+✅ 3. DEFAULT – "Auto Fill If Empty"
+
+If no value is given for this column, it will automatically fill with a default value.
+
+📌 Example:
+
+CREATE TABLE stu (
+
+  no INT,
+
+  name VARCHAR(10),
+
+  city VARCHAR(10) DEFAULT 'BTech'
+
+);
+
+-- city will be 'BTech' because not provided
+
+INSERT INTO stu (no, name) VALUES (111, 'Himanshu'), (112, 'Jatin');
+
+-- All values provided
+
+INSERT INTO stu VALUES (113, 'Vijay', 'MBA');
+
+ 
+
+🔗 4. FOREIGN KEY Constraint – "Connect Two Tables"
+
+🔹 Definition
+
+Used to link one table to another. Ensures that the value in one table (child) matches a primary key in another table (parent). 
+
+🧠 Concept:
+
+•	Parent Table → Has the PRIMARY KEY
+
+•	Child Table → Uses FOREIGN KEY to refer to parent
+
+📌 Example:
+
+Relationship: In the child table (child), the rollno comes from the parent table (parent), like a child referring to its parent. 
+
+ 
+
+✅ Step 1: Create parent table
+
+CREATE TABLE parent (
+
+  rollno INT PRIMARY KEY,
+
+  name VARCHAR(10),
+
+  class VARCHAR(10)
+
+);
+
+ 
+
+✅ Step 2: Create child table with FOREIGN KEY
+
+CREATE TABLE child (
+
+  rollno INT,
+
+  marks INT,
+
+  FOREIGN KEY (rollno) REFERENCES parent(rollno)
+
+);
+
+ 
+
+✅ Step 3: Insert data into both tables
+
+INSERT INTO parent VALUES 
+
+(101, 'himanshu', 'btch'), 
+
+(102, 'jatin', 'bcom'), 
+
+(103, 'vijay', 'bsc');
+
+
+
+INSERT INTO child VALUES 
+
+(101, 80), 
+
+(102, 85), 
+
+(103, 88);
+
+ 
+
+✅ Step 4: Show name, class, and marks (as percentage) using subquery (without join)
+
+SELECT 
+
+  name,
+
+  class,
+
+  (SELECT marks FROM child WHERE child.rollno = parent.rollno) AS percentage
+
+FROM 
+
+  parent;
+
+ 
+
+
+
+Notes:
+
+DELETE FROM student WHERE roll_no = roll_no;
+
+❌ Why does it delete ALL rows?
+
+Because roll_no = roll_no is true for every row — each roll number equals itself.
+
+So it's the same as:
+
+DELETE FROM student;		-- delete every row
+
+
+
+❗But safer to use specific conditions like:
+
+DELETE FROM student WHERE roll_no = 101; -- it delete only 101 roll_no data
+
+
+
+DELETE FROM student WHERE roll_no IS NULL;
+
+✅ This will correctly delete all rows where roll_no is NULL.
+
+✅ What is a Subquery?
+
+A subquery is a query inside another query.
+
+🔹 It helps you: Fetch related data, Filter results, Replace JOINs in some cases
+
+ 
+
+✅ Example Tables:
+
+student table:
+
+rollno	name	marks
+
+101	Himanshu	80
+
+102	Jatin	70
+
+103	Vijay	90
+
+ 
+
+✅ Step-by-Step with Subquery
+
+🎯 Goal: Get students who scored above average
+
+🧩 Subquery First:
+
+SELECT AVG(marks) FROM student;
+
+(returns 80)
+
+ 
+
+✅ Main Query + Subquery:
+
+SELECT name, marks
+
+FROM student
+
+WHERE marks > (SELECT AVG(marks) FROM student);
+
+🧾 Output:
+
+name	marks
+
+Vijay	90
+
+Because only Vijay scored above the average (80).
+
+ 
+
+✅ Types of Subqueries:
+
+1.	In SELECT clause:
+
+SELECT name, (SELECT AVG(marks) FROM student) AS avg_marks FROM student;
+
+2.	In WHERE clause (most common):
+
+SELECT name FROM student WHERE marks > (SELECT AVG(marks) FROM student);
+
+3.	In FROM clause:
+
+SELECT * FROM (SELECT * FROM student WHERE marks > 80) AS top_students;
+
+ 
+
+✅ Summary (For Notes):
+
+Term	Meaning
+
+Subquery	Query inside another query
+
+Purpose	To filter, compare, or calculate related data
+
+Common use	Inside SELECT, WHERE, or FROM clause
+
+ 
+
+ 
+
+🔹 1. Indexes in SQL
+
+•	Indexes help retrieve data faster from a table.
+
+•	Work like a table of contents in a book.
+
+•	Read operations become faster, but:
+
+⚠️ Update/Insert/Delete operations become slower (because the index also needs updating).
+
+ 
+
+📌 Create Index Syntax
+
+👉 Regular Index (allows duplicate values)
+
+CREATE INDEX index_name
+
+ON table_name (col1, col2, ...);
+
+👉 Unique Index (no duplicate values allowed)
+
+CREATE UNIQUE INDEX index_name
+
+ON table_name (col1, col2, ...);
+
+🔁 Syntax may vary slightly in different databases. Always check your DBMS documentation.
+
+ 
+
+💡 Example:
+
+CREATE INDEX myidx ON student(class);
+
+SELECT * FROM student;
+
+✅ Index helps speed up SELECT queries, especially on large tables.
+
+ 
+
+👁️ Visual Representation
+
+Here’s how it looks internally (simplified):
+
+STUDENT TABLE (Partitioned by CLASS)
+
+ ├── Partition 10 --> [Index on Roll_No]
+
+ ├── Partition 11 --> [Index on Roll_No]
+
+ └── Partition 12 --> [Index on Roll_No]
+
+When you run:
+
+SELECT * FROM student WHERE class = 11 AND roll_no = 123;
+
+👉 Database directly jumps to:
+
+•	Partition for class = 11
+
+•	Uses index to search for roll_no = 123
+
+🔋 Fast and Efficient!
+
+ 
+
+🔸 So, What is myidx?
+
+•	myidx is just a custom name for your index.
+
+•	You can name it anything like idx_class, class_index, index1... your choice!
+
+•	It’s useful when you:
+
+o	Want to DROP it later:
+
+DROP INDEX myidx ON student;
+
+o	Want to look up existing indexes
+
+SHOW INDEX FROM student;
+
+🎯 It’s like giving a name to a shortcut — so you can reuse or manage it later.
+
+ 
+
+🔹 2. ALTER Statement
+
+Used to:
+
+•	Add, Modify, Delete, or Rename columns in an existing table.
+
+•	Add constraints like NOT NULL, UNIQUE, etc.
+
+ 
+
+📌 2.1 Add Column
+
+ALTER TABLE table_name
+
+ADD column_name datatype;
+
+✅ Example:
+
+ALTER TABLE customers ADD COLUMN email VARCHAR(255);
+
+-- or( when adding column it works if not using column but other place always use column)
+
+ALTER TABLE customers ADD email VARCHAR(255);
+
+ 
+
+📌 2.2 Drop Column
+
+ALTER TABLE table_name
+
+DROP COLUMN column_name;
+
+✅ Example:
+
+ALTER TABLE employee DROP COLUMN state;
+
+⚠️ Some databases may not support dropping a column directly.
+
+ 
+
+📌 2.3 Rename Column
+
+ALTER TABLE table_name
+
+RENAME COLUMN old_name TO new_name;
+
+✅ Example:
+
+ALTER TABLE student RENAME COLUMN city TO address;
+
+ 
+
+📌 2.4 Modify Column (Change datatype or size)
+
+ALTER TABLE table_name
+
+MODIFY COLUMN column_name NEW_DATATYPE;
+
+✅ Example:
+
+ALTER TABLE employee MODIFY COLUMN name VARCHAR(15);
+
+❌ Reducing size can throw error if existing data doesn't fit:
+
+ALTER TABLE employee MODIFY COLUMN name VARCHAR(5);  -- May cause error
+
+
+
+🔹 3. 🔁 Changing Datatype (Depends on Compatibility)
+
+From	To	Allowed?
+
+INT → VARCHAR	✅ Yes	All int values can become text
+
+VARCHAR → INT	⚠️ Maybe	Only if all values are numbers
+
+FLOAT → INT	⚠️ Maybe	Will truncate decimals
+
+INT → DATE	❌ No	Incompatible format
+
+ 
+
+🚫 Example: Error when incompatible
+
+ALTER TABLE employee MODIFY COLUMN name INT;
+
+❌ This fails if name contains text values like "John".
+
+
+
+Q: Can we change the datatype of a column in SQL if data is already inserted?
+
+✅ Yes, if the existing data is compatible with the new datatype or size.
+
+
+
+ 
+
+🔹 3. SQL Table Constraints via ALTER
+
+✅ Use ALTER to Apply Constraints after Table Creation (if no data inserted yet)
+
+📌 Example:
+
+CREATE TABLE person (
+
+    id INT,
+
+    name VARCHAR(10),
+
+    age INT
+
+);
+
+Add NOT NULL
+
+ALTER TABLE person
+
+MODIFY COLUMN id INT NOT NULL;
+
+Add UNIQUE Constraint
+
+ALTER TABLE person
+
+ADD UNIQUE(id);  -- Now id becomes PRIMARY KEY because it's already NOT NULL
+
+ALTER TABLE person
+
+ADD UNIQUE(age); -- Now age becomes UNIQUE KEY
+
+ 
+
+✅ Named Constraint in MySQL
+
+🧱 What is a "Named Constraint"?
+
+A named constraint is when you give a custom name to a constraint (like UNIQUE, PRIMARY KEY, etc.) so it's easier to identify and manage later.
+
+ 
+
+🧠 Why use a named constraint?
+
+•	Easy to drop or modify later (you know the name).
+
+•	No need to search for the system-generated name.
+
+•	Improves code readability and maintenance.
+
+ 
+
+🔧 Syntax (MySQL):
+
+ALTER TABLE table_name
+
+ADD CONSTRAINT constraint_name UNIQUE (column_name);
+
+ 
+
+🧾 Example:
+
+ALTER TABLE students
+
+ADD CONSTRAINT unique_roll UNIQUE (roll_no);
+
+✅ What this does:
+
+1.	Makes sure roll_no has no duplicates.
+
+2.	Names the constraint as unique_roll.
+
+ 
+
+❌ What if I skip the name?
+
+ALTER TABLE students
+
+ADD UNIQUE (roll_no);
+
+⚠️ SQL will still create a UNIQUE constraint, but MySQL will auto-generate a name (like students_roll_no_uq1) — harder to remember or manage.
+
+ 
+
+🔥 How to remove the constraint?
+
+✅ In MySQL:
+
+ALTER TABLE students DROP INDEX unique_roll;
+
+⚠️ Note: In MySQL, UNIQUE constraints are treated as indexes, so you use DROP INDEX — not DROP CONSTRAINT.
+
+
+
+🧠 Remember here's the difference:
+
+Action	What it does
+
+ALTER TABLE students DROP INDEX unique_roll;	❌ Only removes the UNIQUE constraint from roll_no, NOT the column itself.
+
+ALTER TABLE students DROP COLUMN roll_no;	⚠️ Completely deletes the entire roll_no column — data gone!
+
+
