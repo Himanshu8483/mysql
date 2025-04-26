@@ -1622,9 +1622,7 @@ ADD UNIQUE (roll_no);
 
  
 
-🔥 How to remove the constraint?
-
-✅ In MySQL:
+🔥 How to remove the constraint in MySQL?
 
 ALTER TABLE students DROP INDEX unique_roll;
 
