@@ -1622,20 +1622,3 @@ ADD UNIQUE (roll_no);
 
  
 
-🔥 How to remove the constraint in MySQL?
-
-ALTER TABLE students DROP INDEX unique_roll;
-
-⚠️ Note: In MySQL, UNIQUE constraints are treated as indexes, so you use DROP INDEX — not DROP CONSTRAINT.
-
-
-
-🧠 Remember here's the difference:
-
-Action	What it does
-
-ALTER TABLE students DROP INDEX unique_roll;	❌ Only removes the UNIQUE constraint from roll_no, NOT the column itself.
-
-ALTER TABLE students DROP COLUMN roll_no;	⚠️ Completely deletes the entire roll_no column — data gone!
-
-
