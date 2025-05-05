@@ -1620,5 +1620,81 @@ ADD UNIQUE (roll_no);
 
 ⚠️ SQL will still create a UNIQUE constraint, but MySQL will auto-generate a name (like students_roll_no_uq1) — harder to remember or manage.
 
+ 🔤 String Functions
+
+🔹 Practice Queries from Class:
+
+-- Sum by product name
+
+SELECT pname, SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+ORDER BY pname;
+
+
+
+-- Sum with filter
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE rate > 1000
+
+GROUP BY pname;
+
+
+
+-- HAVING clause (sum filter)
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+
+
+-- Filter product name using HAVING
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING pname = "mouse";
+
+
+
+-- Multiple conditions
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE pname NOT IN ("hdd")
+
+GROUP BY pname
+
+HAVING SUM(total) > 10000;
+
  
+
+🔹 Table Constraint Example:
+
+CREATE TABLE constraints (
+
+  roll INT(10) UNIQUE,
+
+  name VARCHAR(10) PRIMARY KEY,
+
+  city VARCHAR(10)
+
+);
 
