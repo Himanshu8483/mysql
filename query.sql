@@ -1530,11 +1530,6 @@ ALTER TABLE employee MODIFY COLUMN name INT;
 
 
 
-Q: Can we change the datatype of a column in SQL if data is already inserted?
-
-✅ Yes, if the existing data is compatible with the new datatype or size.
-
-
 
  
 
@@ -1574,12 +1569,6 @@ ADD UNIQUE(age); -- Now age becomes UNIQUE KEY
 
 ✅ Named Constraint in MySQL
 
-🧱 What is a "Named Constraint"?
-
-A named constraint is when you give a custom name to a constraint (like UNIQUE, PRIMARY KEY, etc.) so it's easier to identify and manage later.
-
- 
-
 🧠 Why use a named constraint?
 
 •	Easy to drop or modify later (you know the name).
@@ -1587,6 +1576,12 @@ A named constraint is when you give a custom name to a constraint (like UNIQUE, 
 •	No need to search for the system-generated name.
 
 •	Improves code readability and maintenance.
+
+🧱 What is a "Named Constraint"?
+
+A named constraint is when you give a custom name to a constraint (like UNIQUE, PRIMARY KEY, etc.) so it's easier to identify and manage later.
+
+ 
 
  
 
@@ -1640,4 +1635,9 @@ ALTER TABLE students DROP INDEX unique_roll;	❌ Only removes the UNIQUE constra
 
 ALTER TABLE students DROP COLUMN roll_no;	⚠️ Completely deletes the entire roll_no column — data gone!
 
+
+
+Q: Can we change the datatype of a column in SQL if data is already inserted?
+
+✅ Yes, if the existing data is compatible with the new datatype or size.
 
