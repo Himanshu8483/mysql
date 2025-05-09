@@ -1615,26 +1615,83 @@ ADD UNIQUE (roll_no);
 
 ⚠️ SQL will still create a UNIQUE constraint, but MySQL will auto-generate a name (like students_roll_no_uq1) — harder to remember or manage.
 
+ 🔤 String Functions
+
+🔹 Practice Queries from Class:
+
+-- Sum by product name
+
+SELECT pname, SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+ORDER BY pname;
+
+
+
+-- Sum with filter
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE rate > 1000
+
+GROUP BY pname;
+
+
+
+-- HAVING clause (sum filter)
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING SUM(qty) > 10;
+
+
+
+-- Filter product name using HAVING
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+GROUP BY pname
+
+HAVING pname = "mouse";
+
+
+
+-- Multiple conditions
+
+SELECT pname, SUM(qty), SUM(total)
+
+FROM product
+
+WHERE pname NOT IN ("hdd")
+
+GROUP BY pname
+
+HAVING SUM(total) > 10000;
+
  
 
-🔥 How to remove the constraint?
+🔹 Table Constraint Example:
 
-✅ In MySQL:
+CREATE TABLE constraints (
 
-ALTER TABLE students DROP INDEX unique_roll;
+  roll INT(10) UNIQUE,
 
-⚠️ Note: In MySQL, UNIQUE constraints are treated as indexes, so you use DROP INDEX — not DROP CONSTRAINT.
+  name VARCHAR(10) PRIMARY KEY,
 
+  city VARCHAR(10)
 
-
-🧠 Remember here's the difference:
-
-Action	What it does
-
-ALTER TABLE students DROP INDEX unique_roll;	❌ Only removes the UNIQUE constraint from roll_no, NOT the column itself.
-
-ALTER TABLE students DROP COLUMN roll_no;	⚠️ Completely deletes the entire roll_no column — data gone!
-
+);
 
 
 Q: Can we change the datatype of a column in SQL if data is already inserted?
