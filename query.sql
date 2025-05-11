@@ -1568,16 +1568,6 @@ HAVING SUM(qty) > 10;
 
 
 
--- Filter product name using HAVING
-
-SELECT pname, SUM(qty), SUM(total)
-
-FROM product
-
-GROUP BY pname
-
-HAVING pname = "mouse";
-
 
 
 -- Multiple conditions
