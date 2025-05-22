@@ -65,59 +65,6 @@ system cls; →
 
  
 
-✅ 1. How to Run a .sql File from CMD (Inside VS Code Terminal)
-
-mysql -u root -p testdb < filename.sql
-
-•	-u root → MySQL username
-
-•	-p → Prompts for password
-
-•	testdb → Your database name
-
-•	< filename.sql → Runs the SQL file
-
-•	✅ This command only works in CMD, not PowerShell
-
- 
-
-❌ PowerShell Issue (Why < Doesn’t Work)
-
-If you try this in PowerShell:
-
-mysql -u root -p testdb < query.sql
-
-You’ll get an error:
-
-The '<' operator is reserved for future use.
-
-✅ Solution: Use CMD instead of PowerShell
-
-Or in PowerShell: 
-
-Get-Content .\query.sql | mysql -u root -p testdb 		(in PowerShell)
-
- 
-
-✅ 2. Set CMD as Default Terminal in VS Code
-
-1.	Press Ctrl + Shift + P (or click on the top menu, click: View → Command Palette...
-
-2.	Type: Terminal: Select Default Profile
-
-3.	Select: Command Prompt
-
-4.	Open terminal again → it will now use CMD
-
- 
-
-✅ 3. Clear CMD Terminal Screen
-
-In CMD: Cls
-
-In PowerShell:	Clear-Host or cls
-
- 
 
 ✅ 4. Avoid “Database Already Exists” Error
 
@@ -256,6 +203,59 @@ INSERT INTO product (pname, qty, rate) VALUES
 ('hdd', 3, 5400);
 
 
+✅ 1. How to Run a .sql File from CMD (Inside VS Code Terminal)
+
+mysql -u root -p testdb < filename.sql
+
+•	-u root → MySQL username
+
+•	-p → Prompts for password
+
+•	testdb → Your database name
+
+•	< filename.sql → Runs the SQL file
+
+•	✅ This command only works in CMD, not PowerShell
+
+ 
+
+❌ PowerShell Issue (Why < Doesn’t Work)
+
+If you try this in PowerShell:
+
+mysql -u root -p testdb < query.sql
+
+You’ll get an error:
+
+The '<' operator is reserved for future use.
+
+✅ Solution: Use CMD instead of PowerShell
+
+Or in PowerShell: 
+
+Get-Content .\query.sql | mysql -u root -p testdb 		(in PowerShell)
+
+ 
+
+✅ 2. Set CMD as Default Terminal in VS Code
+
+1.	Press Ctrl + Shift + P (or click on the top menu, click: View → Command Palette...
+
+2.	Type: Terminal: Select Default Profile
+
+3.	Select: Command Prompt
+
+4.	Open terminal again → it will now use CMD
+
+ 
+
+✅ 3. Clear CMD Terminal Screen
+
+In CMD: Cls
+
+In PowerShell:	Clear-Host or cls
+
+ 
 
 UPDATE Statement 
 
