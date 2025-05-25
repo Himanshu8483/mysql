@@ -26,7 +26,6 @@ RDBMS (Relational Database Management System)
 
 • Based on the relational model, uses SQL.
 
-• Examples:
 
 o Oracle (Enterprise-level)
 
