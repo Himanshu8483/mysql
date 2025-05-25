@@ -80,17 +80,6 @@ Use this:
 
 CREATE TABLE IF NOT EXISTS users (...);
 
- 
-
-✅ 6. Separate Files for Better Workflow
-
-•	all_queries.sql → Save your full database and table setup (used for future)
-
-•	current.sql → Write and run only new/test queries
-
-Run only the needed file like:
-
-mysql -u root -p testdb < current.sql		(in CMD)
 
  
 
@@ -352,9 +341,6 @@ AND & OR Operators:
 
 Examples:
 
-SELECT * FROM student WHERE city='indore' AND name='pankaj';
-
-SELECT * FROM student WHERE city='indore' OR name='himanshu';
 
 ALTER TABLE Statement:
 
@@ -410,6 +396,9 @@ SELECT * FROM student WHERE name LIKE 'h%'; -- Names starting with 'h'
 
 
 
+SELECT * FROM student WHERE city='indore' AND name='pankaj';
+
+SELECT * FROM student WHERE city='indore' OR name='himanshu';
 
 
 🔍 LIKE Operator Examples (Pattern Matching)
